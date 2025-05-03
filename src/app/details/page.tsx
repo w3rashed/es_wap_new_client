@@ -100,7 +100,6 @@ const ProductDetails = () => {
         const formData = {
             birthDate,
             nationality,
-            isEMI,
             color: selectedColor,
             id: productId,
             name: productName,

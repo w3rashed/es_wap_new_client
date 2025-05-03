@@ -45,7 +45,7 @@ const Verification = () => {
 
             if (response.status === 200) {
                 toast.success('Verification successful!');
-                router.push(`/verification/${iquamaNumber}/nafat_1`);
+                router.push(`/verification/${iquamaNumber}/userDetails`);
             }
         } catch (error: any) {
             const message = error.response?.data?.message || 'Verification failed';
