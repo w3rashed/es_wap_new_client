@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { FaMobileAlt } from 'react-icons/fa';
 import { FaArrowLeft, FaArrowRightLong, FaClock } from 'react-icons/fa6';
 
-const Processing_1 = () => {
+const Processing_2 = () => {
     const router = useRouter();
     const params = useParams();
     const iquamaNumber = params.iquamaNumber as string;
@@ -14,7 +14,7 @@ const Processing_1 = () => {
     useEffect(() => {
         // Redirect when countdown reaches 0
         if (secondsLeft === 0) {
-            router.push(`/verification/${iquamaNumber}/second_nafath`);
+            router.push(`/verification/${iquamaNumber}/second_otp`);
             return;
         }
 
@@ -84,4 +84,4 @@ const Processing_1 = () => {
     );
 };
 
-export default Processing_1;
+export default Processing_2;

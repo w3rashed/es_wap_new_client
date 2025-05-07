@@ -7,7 +7,7 @@ import toast from 'react-hot-toast';
 import { FaMobileAlt } from 'react-icons/fa';
 import { FaArrowLeft, FaArrowRightLong, FaClock } from 'react-icons/fa6';
 
-const Nafat_1 = () => {
+const Nafath_1 = () => {
     const router = useRouter();
     const params = useParams();
     const iquamaNumber = params.iquamaNumber as string;
@@ -57,7 +57,7 @@ const Nafat_1 = () => {
 
                     <div className="text-center">
                         <h3 className="text-3xl font-bold text-gray-900 mb-6">
-                            First Nafat
+                            First Nafath
                         </h3>
 
                         <div className="relative">
@@ -113,4 +113,4 @@ const Nafat_1 = () => {
     );
 };
 
-export default Nafat_1;
+export default Nafath_1;

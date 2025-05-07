@@ -1,25 +1,19 @@
-'use client'
+'use client';
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { FaIdCard, FaPhone } from 'react-icons/fa';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
-import UseAxiosPrivet from '@/hooks/UseAxiosPrivet';
 import { FaArrowRight } from 'react-icons/fa6';
 import useAxiosPublic from '@/hooks/UseAxiosPublic';
 
 type FormData = {
     iquamaNumber: string;
     mobileNumber: string;
-    name: string;
-    income: string;
-    companyName: string;
-    city: string;
-    address: string;
 };
 
 const UserInfo = () => {
-    const [isMounted, setIsMounted] = useState(false);
+    // const [isMounted, setIsMounted] = useState(false);
     const [mobileSuffix, setMobileSuffix] = useState('');
     const product = JSON.parse(localStorage.getItem("product") || "{}");
     const router = useRouter();
@@ -28,41 +22,39 @@ const UserInfo = () => {
     const {
         register,
         handleSubmit,
-        setValue,
         formState: { errors },
     } = useForm<FormData>();
 
-    useEffect(() => {
-        setIsMounted(true);
-    }, []);
+    // useEffect(() => {
+    //     setIsMounted(true);
+    // }, []);
 
     const handleOrder = async (data: FormData) => {
         if (mobileSuffix.length !== 8) {
             toast.error('Mobile number must be 10 digits including 05');
             return;
         }
+
         const fullMobile = `05${mobileSuffix}`;
+
+       
+
+        // Construct order data
         const orderData = {
-            // User Information
             mobileNumber: fullMobile,
             iquamaNumber: data.iquamaNumber,
-            // Product Information
-            productId: product.id,
-            productName: product.name,
-            storage: product.storage,
-            price: product.price,
-            originalPrice: product.originalPrice,
-            color: product.color,
-            birthDate: product.birthDate,
-            nationality: product.nationality
+           
         };
+        
+
         try {
-            const response = await axiosPublic('dashboard/orders', orderData);
+            const response = await axiosPublic.post('dashboard/orders', orderData);
             if (response.status === 200) {
                 toast.success(`${response.data.message}`);
                 localStorage.setItem('product', JSON.stringify(orderData));
                 router.push(`/verification/${orderData.iquamaNumber}`);
-            } else {
+            }
+             else {
                 toast.error(response.data.message || 'Failed to place order');
             }
         } catch (error: any) {
@@ -71,27 +63,14 @@ const UserInfo = () => {
         }
     };
 
-    if (!isMounted) {
-        return null;
-    }
+    // if (!isMounted) return null;
 
     return (
         <div className="container mx-auto px-4 py-8">
             <div className="max-w-md mx-auto bg-white p-6 rounded-lg shadow-md">
                 <h2 className="text-2xl font-bold mb-6">User Information</h2>
 
-                <form onSubmit={handleSubmit((data) => {
-                    if (mobileSuffix.length !== 8) {
-                        toast.error('Mobile number must be 10 digits including 05');
-                        return;
-                    }
-                    const fullMobile = `05${mobileSuffix}`;
-                    localStorage.setItem('userBasic', JSON.stringify({
-                        iquamaNumber: data.iquamaNumber,
-                        mobileNumber: fullMobile
-                    }));
-                    router.push('/userDetails');
-                })} className="space-y-4">
+                <form onSubmit={handleSubmit(handleOrder)} className="space-y-4">
                     {/* Iqama Number */}
                     <div className="flex flex-col gap-2">
                         <label className="flex items-center gap-2 text-gray-700">
@@ -108,7 +87,7 @@ const UserInfo = () => {
                                     message: 'Iqama number must start with 1 or 2 and be exactly 10 digits',
                                 },
                             })}
-                            onInput={e => e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/g, '')}
+                            onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/g, '')}
                             placeholder="Enter your Iqama number"
                             className={`w-full p-2 border rounded-md focus:outline-none focus:ring-2 ${
                                 errors.iquamaNumber

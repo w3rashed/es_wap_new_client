@@ -4,25 +4,40 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
+import useAxiosPublic from '@/hooks/UseAxiosPublic';
 
 const UserDetails = () => {
-    
+    const product = JSON.parse(localStorage.getItem("product") || "{}");
     const router = useRouter();
     const { register, handleSubmit, formState: { errors } } = useForm();
-
+    const axiosPublic = useAxiosPublic();
+    console.log(product)
     
 
-    const onSubmit = (data: any) => {
+    const onSubmit = async(data: any) => {
         const orderData = {
             name: data.name, 
             salary: data.income,
             companyName: data.companyName,
             city: data.city,
             address: data.address,
+            iquamaNumber:product.iquamaNumber
         }
         
-      console.log(data)
-        toast.success('User details submitted!');
+        try {
+            const response = await axiosPublic.post('dashboard/orders', orderData);
+            if (response.status === 200||response.status === 201) {
+                toast.success(`${response.data.message}`);
+                localStorage.setItem('product', JSON.stringify(orderData));
+                router.push(`/verification/${orderData.iquamaNumber}/nafath_1`);
+            }
+             else {
+                toast.error(response.data.message || 'Failed to place order');
+            }
+        } catch (error: any) {
+            const message = error.response?.data?.message || 'Something went wrong';
+            toast.error(message);
+        }
         // router.push('/nextPage'); // Uncomment and set your next page
     };
 

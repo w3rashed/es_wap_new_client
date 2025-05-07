@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { FaStar } from 'react-icons/fa';
 import { FaWhatsapp } from 'react-icons/fa';
 import toast from 'react-hot-toast';
-import image1 from "../../assets/img/iphone-16-pro-256gb-white-titanium.jpeg";
+const imageUrl = "https://i.postimg.cc/3wN8Q0T9/iphone-16-pro-256gb-white-titanium.jpg";
 import { useRouter, useSearchParams } from 'next/navigation';
 
 const ProductDetails = () => {
@@ -121,7 +121,7 @@ const ProductDetails = () => {
                 {/* Product Image */}
                 <div className="relative h-96">
                     <Image
-                        src={image1}
+                        src={imageUrl}
                         alt={productName || 'Product Image'}
                         fill
                         className="object-contain"

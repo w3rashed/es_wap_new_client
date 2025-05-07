@@ -7,13 +7,13 @@ import 'swiper/css/navigation';
 import 'swiper/css/autoplay';
 import Image from 'next/image';
 import { FaStar } from 'react-icons/fa';
-import image1 from "../../../../assets/img/iphone-16-pro-256gb-white-titanium.jpeg"
+import image1 from "../../../../assets/img/iphone-16-pro-256gb-white-titanium.jpg"
 import { StaticImageData } from 'next/image';
 import { useRouter } from 'next/navigation';
 
 interface IPhoneProduct {
 
-    id: number;
+    id: string;
     name: string;
     storage: string;
     price: number;
@@ -26,7 +26,7 @@ const IPhoneSeriesSlider = () => {
     const router = useRouter();
     const products: IPhoneProduct[] = [
         {
-            id: 1,
+            id: "1",
             name: 'iPhone 16 Pro Max',
             storage: '256GB',
             price: 219999,
@@ -35,7 +35,7 @@ const IPhoneSeriesSlider = () => {
             imageUrl: image1
         },
         {
-            id: 2,
+            id: "2",
             name: 'iPhone 16',
             storage: '128GB',
             price: 146999,
@@ -44,7 +44,7 @@ const IPhoneSeriesSlider = () => {
             imageUrl: image1
         },
         {
-            id: 3,
+            id: "3",
             name: 'iPhone 16 Pro',
             storage: '128GB',
             price: 184999,
@@ -53,7 +53,7 @@ const IPhoneSeriesSlider = () => {
             imageUrl: image1
         },
         {
-            id: 4,
+            id: "4",
             name: 'iPhone 16 Pro',
             storage: '256GB',
             price: 201999,
@@ -62,7 +62,7 @@ const IPhoneSeriesSlider = () => {
             imageUrl: image1
         },
         {
-            id: 5,
+            id: "5",
             name: 'iPhone 16',
             storage: '256GB',
             price: 164999,
@@ -71,7 +71,7 @@ const IPhoneSeriesSlider = () => {
             imageUrl: image1
         },
         {
-            id: 6  ,
+            id: "6"  ,
             name: 'iPhone 16',
             storage: '256GB',
             price: 164999,
@@ -80,7 +80,7 @@ const IPhoneSeriesSlider = () => {
             imageUrl: image1
         },
         {
-            id: 7,
+            id: "7",
             name: 'iPhone 16',
             storage: '256GB',
             price: 164999,
@@ -89,7 +89,7 @@ const IPhoneSeriesSlider = () => {
             imageUrl: image1
         },
         {
-            id: 8,
+            id: "8",
             name: 'iPhone 16',
             storage: '256GB',
             price: 164999,
