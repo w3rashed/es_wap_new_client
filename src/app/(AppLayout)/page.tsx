@@ -4,6 +4,8 @@ import BannerMarquee from '@/container/home/components/sections/BannerMarquee';
 import BannerSlider from '@/container/home/components/sections/BannerSlider';
 import IPhoneSeries from '@/container/home/components/sections/IPhoneSeries';
 import IPhoneSeriesSlider from '@/container/home/components/sections/IPhoneSeriesSlider';
+import SamsungSeriesSlider from '@/container/home/components/sections/SamsungSeriesSlider';
+import OnePlusSeriesSlider from '@/container/home/components/sections/OnePlusSeriesSlider ';
 
 const HomePage = () => {
     
@@ -16,16 +18,14 @@ const HomePage = () => {
                 <BannerMarquee />
             </div>
             <div className='container mx-auto my-10'>
-                <h3 className='text-[30px] leading-[1.2] font-bold text-gray-900'>
-                    iPhone  Series
-                </h3>
+                
                 <IPhoneSeriesSlider />
             </div>
-            <div className='container mx-auto my-10'>
-                <h3 className='text-[30px] leading-[1.2] font-bold text-gray-900'>
-                    Samsung  Series
-                </h3>
-                <IPhoneSeriesSlider />
+            <div className='container mx-auto my-10'>  
+                <SamsungSeriesSlider />
+            </div>
+            <div className='container mx-auto my-10'>  
+                <OnePlusSeriesSlider />
             </div>
         </div>
     );

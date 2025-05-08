@@ -22,15 +22,26 @@ interface Product {
     mobileImg: string;
 }
 
-const IPhoneSeriesSlider = () => {
+const OnePlusSeriesSlider = () => {
     const { ConsumerProducts, isLoading, error, refetch } = UseGetConsumerProducts();
     const router = useRouter();
 
-    // Filter only Apple products
-    const appleProducts = ConsumerProducts?.filter((product: { BrandName: string; }) => product.BrandName === 'Apple') || [];
+    // Filter only Samsung products
+    const samsungProducts = ConsumerProducts?.filter((product: { BrandName: string; }) => product.BrandName === 'OnePlus') || [];
 
     const handleBuyNow = (product: Product) => {
-        router.push(`/details?id=${product._id}`);
+        const params = new URLSearchParams({
+            id: product._id,
+            brand: product.BrandName,
+            model: product.ModelName,
+            price: product.OfferPrice.toString(),
+            originalPrice: product.RegularPrice.toString(),
+            rating: product.rating.toString(),
+            color: product.color,
+            status: product.status
+        });
+
+        router.push(`/details?${params.toString()}`);
     };
 
     if (isLoading) {
@@ -49,15 +60,15 @@ const IPhoneSeriesSlider = () => {
         );
     }
 
-    // Don't render if no Apple products
-    if (appleProducts.length === 0) {
+    // Don't render if no Samsung products
+    if (samsungProducts.length === 0) {
         return null;
     }
 
     return (
         <div className="w-full relative px-4 md:px-8">
             <h3 className='text-[30px] leading-[1.2] font-bold text-gray-900'>
-                    iPhone  Series
+                    OnePlus Series
             </h3>
             <Swiper
                 slidesPerView={1}
@@ -83,7 +94,7 @@ const IPhoneSeriesSlider = () => {
                 }}
                 className="w-full py-8"
             >
-                {appleProducts.map((product: Product) => (
+                {samsungProducts.map((product: Product) => (
                     <SwiperSlide key={product._id}>
                         <div className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300">
                             <div className="relative w-full h-[280px] bg-gray-50 rounded-t-lg p-4">
@@ -129,4 +140,4 @@ const IPhoneSeriesSlider = () => {
     );
 };
 
-export default IPhoneSeriesSlider;
+export default OnePlusSeriesSlider; 

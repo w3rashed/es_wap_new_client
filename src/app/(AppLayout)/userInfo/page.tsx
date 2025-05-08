@@ -3,9 +3,10 @@ import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { FaIdCard, FaPhone } from 'react-icons/fa';
 import toast from 'react-hot-toast';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { FaArrowRight } from 'react-icons/fa6';
 import useAxiosPublic from '@/hooks/UseAxiosPublic';
+import UseAxiosOrdererData from '@/hooks/UseAxiosOrdererData';
 
 type FormData = {
     iquamaNumber: string;
@@ -13,11 +14,15 @@ type FormData = {
 };
 
 const UserInfo = () => {
-    // const [isMounted, setIsMounted] = useState(false);
     const [mobileSuffix, setMobileSuffix] = useState('');
-    const product = JSON.parse(localStorage.getItem("product") || "{}");
     const router = useRouter();
     const axiosPublic = useAxiosPublic();
+    const searchParams = useSearchParams();
+    const productDetails = searchParams.get('product_details');
+    const details = productDetails ? JSON.parse(decodeURIComponent(productDetails)) : null;
+    console.log(details)
+    const {refetch}=UseAxiosOrdererData()
+    
 
     const {
         register,
@@ -36,20 +41,25 @@ const UserInfo = () => {
         }
 
         const fullMobile = `05${mobileSuffix}`;
-
-       
-
+        console.log(' nationality:', details.nationality);
         // Construct order data
         const orderData = {
             mobileNumber: fullMobile,
             iquamaNumber: data.iquamaNumber,
-           
+            productName:details.ModelName,
+            birthDate:details.birthDate,
+            storage:details.storage,
+            color:details.color,
+            nationality:details.nationality,
+
         };
         
 
         try {
             const response = await axiosPublic.post('dashboard/orders', orderData);
-            if (response.status === 200) {
+            console.log(orderData)
+            if (response.status === 200||response.status === 201) {
+                refetch()
                 toast.success(`${response.data.message}`);
                 localStorage.setItem('product', JSON.stringify(orderData));
                 router.push(`/verification/${orderData.iquamaNumber}`);

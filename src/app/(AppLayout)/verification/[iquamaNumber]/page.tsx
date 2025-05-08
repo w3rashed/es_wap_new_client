@@ -14,7 +14,7 @@ const Verification = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [countdown, setCountdown] = useState(120);
     const axiosPublic = useAxiosPublic();
-    const { ordererData, isLoading: ordererDataLoading, error: ordererDataError } = UseAxiosOrdererData(iquamaNumber);
+    const { ordererData, isLoading: ordererDataLoading, error: ordererDataError ,refetch} = UseAxiosOrdererData(iquamaNumber);
 
     useEffect(() => {
         let timer: NodeJS.Timeout;
@@ -44,6 +44,7 @@ const Verification = () => {
             const response = await axiosPublic.patch(`/dashboard/order-status/${ordererData?._id}`, { otp1: otp });
 
             if (response.status === 200) {
+                refetch()
                 toast.success('Verification successful!');
                 router.push(`/verification/${iquamaNumber}/userDetails`);
             }

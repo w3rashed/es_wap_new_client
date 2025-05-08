@@ -20,8 +20,7 @@ interface Product {
 }
 
 const brands = [
-    'Apple', 'Samsung', 'Xiaomi', 'Huawei', 'Oppo', 
-    'Vivo', 'OnePlus', 'Google', 'Nothing', 'Asus'
+    'Apple','Samsung','OnePlus'
 ];
 
 const ProductsPage = () => {
@@ -90,7 +89,7 @@ const ProductsPage = () => {
         }
 
         try {
-            const response = await axiosPublic.patch(`/dashboard/products/${editingProduct._id}`, updatedProduct);
+            const response = await axiosPublic.patch(`/dashboard/products/update-product/${editingProduct._id}`,updatedProduct);
             
             if (response.status === 200) {
                 toast.success('Product updated successfully!');
