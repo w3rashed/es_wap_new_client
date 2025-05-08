@@ -4,11 +4,15 @@ import { useQuery } from '@tanstack/react-query';
 import useAxiosPublic from './UseAxiosPublic';
 
 interface OrdererData {
-    iquamaNumber: string;
-    name: string;
-    email: string;
-    phone: string;
-    // Add other fields as needed
+    _id: string;
+    BrandName: string;
+    ModelName: string;
+    rating: number;
+    RegularPrice: number;
+    OfferPrice: number;
+    status: 'In Stock' | 'Stock Out';
+    color: string;
+   
 }
 
 const UseAxiosOrdererData = (iquamaNumber: string) => {
