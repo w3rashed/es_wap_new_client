@@ -1,11 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   
-  // output: 'standalone',
+  // Enable proper dynamic routing support
+  output: 'standalone',
   
   // Optimize image domains if you're using next/image
   images: {
-    domains: ['*'],
+    domains: ['localhost', 'https://homemobilestore.com'], // Add your actual domains here
     unoptimized: true
   },
 
