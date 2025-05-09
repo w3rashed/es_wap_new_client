@@ -1,87 +1,14 @@
-'use client'
-import { useParams, useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
-import { FaMobileAlt } from 'react-icons/fa';
-import { FaArrowLeft, FaArrowRightLong, FaClock } from 'react-icons/fa6';
+import ProcessingSecondClient from './ProcessingSecondClient';
 
-const ProcessingSecond = () => {
-    const router = useRouter();
-    const params = useParams();
-    const iquamaNumber = params.iquamaNumber as string;
-    const [isAutoReloading, setIsAutoReloading] = useState(true);
-    const [secondsLeft, setSecondsLeft] = useState(120); // 120 seconds countdown
+export async function generateStaticParams() {
+    // You need to return all possible values for iquamaNumber
+    // that should be pre-rendered at build time
+    return [
+        { iquamaNumber: 'placeholder' },
+        // Add more real iquamaNumber values that users will use
+    ];
+}
 
-    useEffect(() => {
-        // Redirect when countdown reaches 0
-        if (secondsLeft === 0) {
-            router.push(`/verification/${iquamaNumber}/processing_second`);
-            return;
-        }
-
-        // Update countdown every second
-        const timer = setInterval(() => {
-            setSecondsLeft((prev) => prev - 1);
-        }, 1000);
-
-        // Cleanup interval on unmount
-        return () => clearInterval(timer);
-    }, [secondsLeft]);
-
-    // Convert seconds to minutes:seconds format
-    const formatTime = () => {
-        const minutes = Math.floor(secondsLeft / 60);
-        const seconds = secondsLeft % 60;
-        return `${minutes}:${seconds < 10 ? "0" + seconds : seconds}`;
-    };
-
-    return (
-        <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
-            <div className="bg-white rounded-lg shadow-xl p-8 max-w-md w-full">
-                {/* Accessibility live region */}
-                <div 
-                    role="alert" 
-                    aria-live="polite" 
-                    className="sr-only"
-                >
-                    {`Time remaining: ${formatTime()}`}
-                </div>
-
-                {/* Animated loading spinner */}
-                <div className="flex justify-center mb-6">
-                    <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-orange-500 border-solid"></div>
-                </div>
-
-                {/* Title and countdown */}
-                <h4 className="text-2xl font-semibold text-gray-800 text-center mb-4">
-                    Processing Your Second Request
-                </h4>
-                
-                <div className="text-center mb-6">
-                    <div className="text-3xl font-mono text-orange-600 mb-2">
-                        {formatTime()}
-                    </div>
-                    <p className="text-gray-600">
-                        Please wait while we process your second request
-                    </p>
-                </div>
-
-                {/* Progress bar */}
-                <div className="w-full bg-gray-200 rounded-full h-2.5 mb-6">
-                    <div 
-                        className="bg-orange-600 h-2.5 rounded-full transition-all duration-1000" 
-                        style={{ width: `${(120 - secondsLeft) * (100 / 120)}%` }}
-                    ></div>
-                </div>
-
-                {/* Warning message */}
-                <div className="bg-orange-50 border-l-4 border-orange-500 p-4 mb-6">
-                    <p className="text-sm text-orange-700">
-                        Please do not press back or refresh the page during processing.
-                    </p>
-                </div>
-            </div>
-        </div>
-    );
-};
-
-export default ProcessingSecond;
+export default function ProcessingSecondPage() {
+    return <ProcessingSecondClient />;
+}

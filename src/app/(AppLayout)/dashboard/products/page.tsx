@@ -16,7 +16,7 @@ interface Product {
     RegularPrice: number;
     status: 'In Stock' | 'Stock Out';
     color: string;
-    mobileImg: string; // Changed to string to store base64
+    mobileImg: string; // String to store base64
 }
 
 const brands = [
@@ -43,7 +43,7 @@ const ProductsPage = () => {
                 OfferPrice: Number(data.OfferPrice),
                 status: data.status,
                 color: data.color,
-                mobileImg: data.mobileImg // This is already a base64 string
+                mobileImg: data.mobileImg // Already a base64 string
             };
 
             const response = await axiosPublic.post('/dashboard/products/add-products', productData);
@@ -173,7 +173,7 @@ const ProductsPage = () => {
 
             {/* Add Product Modal */}
             {isAddModalOpen && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
                     <div className="bg-white rounded-lg p-6 max-w-md w-full max-h-[90vh] overflow-y-auto">
                         <h2 className="text-xl font-bold mb-4">Add New Product</h2>
                         <form onSubmit={handleSubmit(handleAddProduct)} className="space-y-4">
@@ -344,9 +344,7 @@ const ProductsPage = () => {
                                 <td className="px-6 py-4 whitespace-nowrap">
                                     {product.mobileImg && (
                                         <img 
-                                            src={typeof product.mobileImg === 'string' 
-                                                ? `data:image/jpeg;base64,${product.mobileImg}`
-                                                : ''}
+                                            src={`data:image/jpeg;base64,${product.mobileImg}`}
                                             alt={product.ModelName} 
                                             className="h-16 w-16 object-cover rounded"
                                         />
@@ -390,7 +388,7 @@ const ProductsPage = () => {
 
             {/* Edit Product Modal */}
             {isEditModalOpen && editingProduct && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
                     <div className="bg-white rounded-lg p-6 max-w-md w-full max-h-[90vh] overflow-y-auto">
                         <h2 className="text-xl font-bold mb-4">Edit Product</h2>
                         <form onSubmit={handleSubmit(handleUpdateProduct)} className="space-y-4">
@@ -510,32 +508,13 @@ const ProductsPage = () => {
                                                 htmlFor="editMobileImg"
                                                 className="relative cursor-pointer bg-white rounded-md font-medium text-orange-600 hover:text-orange-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-orange-500"
                                             >
-                                                <span>Upload a new image</span>
+                                                <span>Upload a file</span>
                                                 <input
-                                                    id="editMobileImg"
+                                                    id="mobileImg"
                                                     type="file"
                                                     accept="image/*"
                                                     className="sr-only"
-                                                    onChange={(e) => {
-                                                        const file = e.target.files?.[0];
-                                                        if (file) {
-                                                            const reader = new FileReader();
-                                                            reader.onload = (event) => {
-                                                                // Display image preview
-                                                                const preview = document.getElementById('editImagePreview');
-                                                                if (preview) {
-                                                                    preview.innerHTML = `
-                                                                        <img src="${event.target?.result}" alt="Preview" class="mx-auto h-32 w-32 object-cover rounded" />
-                                                                    `;
-                                                                }
-                                                                
-                                                                // Store only the base64 data part
-                                                                const base64String = (event.target?.result as string).split(',')[1];
-                                                                setValue('mobileImg', base64String);
-                                                            };
-                                                            reader.readAsDataURL(file);
-                                                        }
-                                                    }}
+                                                    onChange={handleFileChange}
                                                 />
                                             </label>
                                             <p className="pl-1">or drag and drop</p>
@@ -543,15 +522,20 @@ const ProductsPage = () => {
                                         <p className="text-xs text-gray-500">PNG, JPG, WebP up to 5MB</p>
                                     </div>
                                 </div>
+                                <div id="imagePreview" className="mt-2"></div>
+                                {errors.mobileImg && (
+                                    <p className="text-red-500 text-sm mt-1">{errors.mobileImg.message}</p>
+                                )}
                             </div>
 
                             <div className="flex justify-end space-x-2">
                                 <button
                                     type="button"
                                     onClick={() => {
-                                        setIsEditModalOpen(false);
-                                        setEditingProduct(null);
+                                        setIsAddModalOpen(false);
                                         reset();
+                                        const preview = document.getElementById('imagePreview');
+                                        if (preview) preview.innerHTML = '';
                                     }}
                                     className="px-4 py-2 border rounded hover:bg-gray-100"
                                 >
@@ -561,13 +545,14 @@ const ProductsPage = () => {
                                     type="submit"
                                     className="px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600"
                                 >
-                                    Update Product
+                                    Add Product
                                 </button>
                             </div>
                         </form>
                     </div>
                 </div>
             )}
+     
         </div>
     );
 };

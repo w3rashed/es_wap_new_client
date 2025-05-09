@@ -4,7 +4,7 @@ import Cookies from 'js-cookie';
 
 const UseAxiosPrivet = () => {
     const instance = axios.create({
-        baseURL: 'http://localhost:5000/api',
+        baseURL: 'https://api.homemobilestore.com/api',
         headers: {
             'Content-Type': 'application/json',
         },

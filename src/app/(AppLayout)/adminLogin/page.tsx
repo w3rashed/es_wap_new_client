@@ -12,7 +12,7 @@ type LoginFormData = {
     password: string;
 };
 
-const AdminLogin = () => {
+const AdminLoginPage = () => {
     const router = useRouter();
     const { login } = useAuth();
     const [showPassword, setShowPassword] = useState(false);
@@ -133,4 +133,4 @@ const AdminLogin = () => {
     );
 };
 
-export default AdminLogin;
+export default AdminLoginPage;

@@ -6,34 +6,32 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/autoplay';
 import Image from 'next/image';
-import Image1 from '../../../../assets/img/iphone-16_1_1920-x-570949.png';
 import SectionContainer from '@/components/shared/SectionContainer';
+import UseGetBanner from '@/hooks/UseGetBanner';
 
 const BannerSlider = () => {
-    const bannerImages = [
-        {
-            id: 1,
-            imageUrl: Image1,
-        },
-        {
-            id: 2,
-            imageUrl: Image1,
-        },
-        {
-            id: 3,
-            imageUrl: Image1,
-        },
-    ];
+    const { bannerImage, isLoading, error, refetch } = UseGetBanner();
+    console.log(bannerImage);
+
+    // If the data is loading, show a loader
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
+
+    // If there is an error fetching the banner images, show an error message
+    if (error) {
+        return <div>Error fetching banner images.</div>;
+    }
 
     return (
         <SectionContainer>
             <div className="w-full">
-                <Swiper 
-                    pagination={{ 
+                <Swiper
+                    pagination={{
                         clickable: true,
                         dynamicBullets: true
-                    }} 
-                    modules={[Pagination, Autoplay]} 
+                    }}
+                    modules={[Pagination, Autoplay]}
                     className="w-full"
                     autoplay={{
                         delay: 3000,
@@ -41,11 +39,12 @@ const BannerSlider = () => {
                     }}
                     loop={true}
                 >
-                    {bannerImages.map((banner) => (
-                        <SwiperSlide key={banner.id}>
-                            <div className=" w-full" style={{ paddingTop: '40%' }}>
+                    {/* Render banners dynamically */}
+                    {Array.isArray(bannerImage) && bannerImage.length > 0 && bannerImage.map((banner: any) => (
+                        <SwiperSlide key={banner._id}>
+                            <div className="w-full" style={{ paddingTop: '40%' }}>
                                 <Image
-                                    src={banner.imageUrl}
+                                    src={banner.bannerImg} // Use the base64 banner image string
                                     alt="Banner Image"
                                     fill
                                     sizes="100vw"

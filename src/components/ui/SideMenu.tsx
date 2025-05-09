@@ -1,6 +1,7 @@
 'use client'
 import React, { useState, useEffect } from 'react';
 import { FaHome, FaUsers, FaBox, FaShoppingCart, FaChartBar, FaCog, FaBars, FaTimes, FaSignOutAlt } from 'react-icons/fa';
+import { FaImage } from "react-icons/fa6";
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
@@ -9,6 +10,7 @@ import UseAxiosPrivet from '@/hooks/UseAxiosPrivet';
 
 const menuItems = [
     { name: 'Users', path: '/dashboard/users', icon: FaUsers },
+    { name: 'Bannder Image', path: '/dashboard/bannerImage', icon: FaImage },
     { name: 'Products', path: '/dashboard/products', icon: FaBox },
     { name: 'Orders', path: '/dashboard/orders', icon: FaShoppingCart },
     { name: 'Analytics', path: '/dashboard/analytics', icon: FaChartBar },
@@ -54,6 +56,7 @@ const SideMenu = () => {
                 >
                     {isOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
                 </button>
+                
             </div>
 
             {/* Overlay - Always Visible */}
