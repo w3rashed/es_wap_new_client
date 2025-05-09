@@ -127,7 +127,7 @@ const ProductsPage = () => {
             const reader = new FileReader();
             reader.onload = (event) => {
                 // Display image preview
-                const preview = document.getElementById('imagePreview');
+                const preview = document.getElementById(e.target.id === 'editMobileImg' ? 'editImagePreview' : 'imagePreview');
                 if (preview) {
                     preview.innerHTML = `
                         <img src="${event.target?.result}" alt="Preview" class="mx-auto h-32 w-32 object-cover rounded" />
@@ -161,28 +161,111 @@ const ProductsPage = () => {
     }
 
     return (
-        <div className="p-6">
-            <div className="flex justify-between items-center mb-6">
-                <h1 className="text-2xl font-bold">Products</h1>
-                <button
-                    onClick={() => setIsAddModalOpen(true)}
-                    className="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600"
-                >
-                    Add New Product
-                </button>
+        <div className="min-h-screen bg-gray-50 p-4 md:p-6">
+            <div className="max-w-7xl mx-auto">
+                <div className="bg-white rounded-lg shadow-sm p-4 md:p-6">
+                    <div className="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
+                        <h1 className="text-2xl font-bold text-gray-800">Products Management</h1>
+                        <button
+                            onClick={() => setIsAddModalOpen(true)}
+                            className="w-full md:w-auto bg-[#e55c00] text-white px-6 py-2.5 rounded-md hover:bg-[#d15400] transition-colors duration-200 flex items-center justify-center gap-2"
+                        >
+                            <span>Add New Product</span>
+                        </button>
+                    </div>
+
+                    {/* Products Table */}
+                    <div className="overflow-x-auto rounded-lg border border-gray-200">
+                        <table className="min-w-full divide-y divide-gray-200">
+                            <thead className="bg-gray-50">
+                                <tr>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Image</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Brand</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Model</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rating</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Regular Price</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Offer Price</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Color</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody className="bg-white divide-y divide-gray-200">
+                                {ConsumerProducts?.map((product: Product) => (
+                                    <tr key={product._id} className="hover:bg-gray-50 transition-colors">
+                                        <td className="px-6 py-4 whitespace-nowrap">
+                                            {product.mobileImg && (
+                                                <img 
+                                                    src={`data:image/jpeg;base64,${product.mobileImg}`}
+                                                    alt={product.ModelName} 
+                                                    className="h-16 w-16 object-cover rounded-lg"
+                                                />
+                                            )}
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{product.BrandName}</td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{product.ModelName}</td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{product.rating}</td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${product.RegularPrice}</td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${product.OfferPrice}</td>
+                                        <td className="px-6 py-4 whitespace-nowrap">
+                                            <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+                                                product.status === 'In Stock' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                                            }`}>
+                                                {product.status}
+                                            </span>
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{product.color}</td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                            <div className="flex items-center gap-3">
+                                                <button
+                                                    onClick={() => {
+                                                        setEditingProduct(product);
+                                                        setIsEditModalOpen(true);
+                                                    }}
+                                                    className="text-[#e55c00] hover:text-[#d15400] transition-colors"
+                                                >
+                                                    Edit
+                                                </button>
+                                                <button
+                                                    onClick={() => handleDeleteProduct(product._id!)}
+                                                    className="text-red-600 hover:text-red-800 transition-colors"
+                                                >
+                                                    Delete
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
 
             {/* Add Product Modal */}
             {isAddModalOpen && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
                     <div className="bg-white rounded-lg p-6 max-w-md w-full max-h-[90vh] overflow-y-auto">
-                        <h2 className="text-xl font-bold mb-4">Add New Product</h2>
+                        <div className="flex justify-between items-center mb-6">
+                            <h2 className="text-xl font-bold text-gray-800">Add New Product</h2>
+                            <button
+                                onClick={() => {
+                                    setIsAddModalOpen(false);
+                                    reset();
+                                    const preview = document.getElementById('imagePreview');
+                                    if (preview) preview.innerHTML = '';
+                                }}
+                                className="text-gray-500 hover:text-gray-700"
+                            >
+                                ✕
+                            </button>
+                        </div>
                         <form onSubmit={handleSubmit(handleAddProduct)} className="space-y-4">
                             <div>
                                 <label className="block text-sm font-medium text-gray-700">Brand</label>
                                 <select
                                     {...register('BrandName', { required: 'Brand is required' })}
-                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
+                                    className="mt-1 block w-full h-12 px-4 rounded-md border-2 border-[#e55c00] shadow-sm focus:border-[#e55c00] focus:ring-[#e55c00] focus:ring-opacity-50 transition-colors"
                                 >
                                     <option value="">Select Brand</option>
                                     {brands.map(brand => (
@@ -197,7 +280,7 @@ const ProductsPage = () => {
                                 <input
                                     type="text"
                                     {...register('ModelName', { required: 'Model name is required' })}
-                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
+                                    className="mt-1 block w-full h-12 px-4 rounded-md border-2 border-[#e55c00] shadow-sm focus:border-[#e55c00] focus:ring-[#e55c00] focus:ring-opacity-50 transition-colors"
                                 />
                                 {errors.ModelName && <p className="text-red-500 text-sm mt-1">{errors.ModelName.message}</p>}
                             </div>
@@ -212,7 +295,7 @@ const ProductsPage = () => {
                                         min: { value: 0, message: 'Rating must be at least 0' },
                                         max: { value: 5, message: 'Rating cannot exceed 5' }
                                     })}
-                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
+                                    className="mt-1 block w-full h-12 px-4 rounded-md border-2 border-[#e55c00] shadow-sm focus:border-[#e55c00] focus:ring-[#e55c00] focus:ring-opacity-50 transition-colors"
                                 />
                                 {errors.rating && <p className="text-red-500 text-sm mt-1">{errors.rating.message}</p>}
                             </div>
@@ -226,7 +309,7 @@ const ProductsPage = () => {
                                         required: 'Regular price is required',
                                         min: { value: 0, message: 'Price must be positive' }
                                     })}
-                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
+                                    className="mt-1 block w-full h-12 px-4 rounded-md border-2 border-[#e55c00] shadow-sm focus:border-[#e55c00] focus:ring-[#e55c00] focus:ring-opacity-50 transition-colors"
                                 />
                                 {errors.RegularPrice && <p className="text-red-500 text-sm mt-1">{errors.RegularPrice.message}</p>}
                             </div>
@@ -240,7 +323,7 @@ const ProductsPage = () => {
                                         required: 'Offer price is required',
                                         min: { value: 0, message: 'Price must be positive' }
                                     })}
-                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
+                                    className="mt-1 block w-full h-12 px-4 rounded-md border-2 border-[#e55c00] shadow-sm focus:border-[#e55c00] focus:ring-[#e55c00] focus:ring-opacity-50 transition-colors"
                                 />
                                 {errors.OfferPrice && <p className="text-red-500 text-sm mt-1">{errors.OfferPrice.message}</p>}
                             </div>
@@ -249,7 +332,7 @@ const ProductsPage = () => {
                                 <label className="block text-sm font-medium text-gray-700">Status</label>
                                 <select
                                     {...register('status', { required: 'Status is required' })}
-                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
+                                    className="mt-1 block w-full h-12 px-4 rounded-md border-2 border-[#e55c00] shadow-sm focus:border-[#e55c00] focus:ring-[#e55c00] focus:ring-opacity-50 transition-colors"
                                 >
                                     <option value="">Select Status</option>
                                     <option value="In Stock">In Stock</option>
@@ -263,7 +346,7 @@ const ProductsPage = () => {
                                 <input
                                     type="text"
                                     {...register('color', { required: 'Color is required' })}
-                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
+                                    className="mt-1 block w-full h-12 px-4 rounded-md border-2 border-[#e55c00] shadow-sm focus:border-[#e55c00] focus:ring-[#e55c00] focus:ring-opacity-50 transition-colors"
                                 />
                                 {errors.color && <p className="text-red-500 text-sm mt-1">{errors.color.message}</p>}
                             </div>
@@ -300,18 +383,6 @@ const ProductsPage = () => {
 
                             <div className="flex justify-end space-x-2">
                                 <button
-                                    type="button"
-                                    onClick={() => {
-                                        setIsAddModalOpen(false);
-                                        reset();
-                                        const preview = document.getElementById('imagePreview');
-                                        if (preview) preview.innerHTML = '';
-                                    }}
-                                    className="px-4 py-2 border rounded hover:bg-gray-100"
-                                >
-                                    Cancel
-                                </button>
-                                <button
                                     type="submit"
                                     className="px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600"
                                 >
@@ -323,82 +394,32 @@ const ProductsPage = () => {
                 </div>
             )}
 
-            {/* Products Table */}
-            <div className="overflow-x-auto">
-                <table className="min-w-full bg-white border rounded-lg">
-                    <thead>
-                        <tr className="bg-gray-50">
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Image</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Brand</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Model</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rating</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Regular Price</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Offer Price</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Color</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-200">
-                        {ConsumerProducts?.map((product: Product) => (
-                            <tr key={product._id}>
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                    {product.mobileImg && (
-                                        <img 
-                                            src={`data:image/jpeg;base64,${product.mobileImg}`}
-                                            alt={product.ModelName} 
-                                            className="h-16 w-16 object-cover rounded"
-                                        />
-                                    )}
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap">{product.BrandName}</td>
-                                <td className="px-6 py-4 whitespace-nowrap">{product.ModelName}</td>
-                                <td className="px-6 py-4 whitespace-nowrap">{product.rating}</td>
-                                <td className="px-6 py-4 whitespace-nowrap">${product.RegularPrice}</td>
-                                <td className="px-6 py-4 whitespace-nowrap">${product.OfferPrice}</td>
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                    <span className={`px-2 py-1 rounded-full text-xs ${
-                                        product.status === 'In Stock' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-                                    }`}>
-                                        {product.status}
-                                    </span>
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap">{product.color}</td>
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                    <button
-                                        onClick={() => {
-                                            setEditingProduct(product);
-                                            setIsEditModalOpen(true);
-                                        }}
-                                        className="text-blue-600 hover:text-blue-900 mr-3"
-                                    >
-                                        Edit
-                                    </button>
-                                    <button
-                                        onClick={() => handleDeleteProduct(product._id!)}
-                                        className="text-red-600 hover:text-red-900"
-                                    >
-                                        Delete
-                                    </button>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
-
             {/* Edit Product Modal */}
             {isEditModalOpen && editingProduct && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
                     <div className="bg-white rounded-lg p-6 max-w-md w-full max-h-[90vh] overflow-y-auto">
-                        <h2 className="text-xl font-bold mb-4">Edit Product</h2>
+                        <div className="flex justify-between items-center mb-6">
+                            <h2 className="text-xl font-bold text-gray-800">Edit Product</h2>
+                            <button
+                                onClick={() => {
+                                    setIsEditModalOpen(false);
+                                    setEditingProduct(null);
+                                    reset();
+                                    const preview = document.getElementById('editImagePreview');
+                                    if (preview) preview.innerHTML = '';
+                                }}
+                                className="text-gray-500 hover:text-gray-700"
+                            >
+                                ✕
+                            </button>
+                        </div>
                         <form onSubmit={handleSubmit(handleUpdateProduct)} className="space-y-4">
                             <div>
                                 <label className="block text-sm font-medium text-gray-700">Brand</label>
                                 <select
                                     defaultValue={editingProduct.BrandName}
                                     {...register('BrandName', { required: 'Brand is required' })}
-                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
+                                    className="mt-1 block w-full h-12 px-4 rounded-md border-2 border-[#e55c00] shadow-sm focus:border-[#e55c00] focus:ring-[#e55c00] focus:ring-opacity-50 transition-colors"
                                 >
                                     <option value="">Select Brand</option>
                                     {brands.map(brand => (
@@ -414,7 +435,7 @@ const ProductsPage = () => {
                                     type="text"
                                     defaultValue={editingProduct.ModelName}
                                     {...register('ModelName', { required: 'Model name is required' })}
-                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
+                                    className="mt-1 block w-full h-12 px-4 rounded-md border-2 border-[#e55c00] shadow-sm focus:border-[#e55c00] focus:ring-[#e55c00] focus:ring-opacity-50 transition-colors"
                                 />
                                 {errors.ModelName && <p className="text-red-500 text-sm mt-1">{errors.ModelName.message}</p>}
                             </div>
@@ -430,7 +451,7 @@ const ProductsPage = () => {
                                         min: { value: 0, message: 'Rating must be at least 0' },
                                         max: { value: 5, message: 'Rating cannot exceed 5' }
                                     })}
-                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
+                                    className="mt-1 block w-full h-12 px-4 rounded-md border-2 border-[#e55c00] shadow-sm focus:border-[#e55c00] focus:ring-[#e55c00] focus:ring-opacity-50 transition-colors"
                                 />
                                 {errors.rating && <p className="text-red-500 text-sm mt-1">{errors.rating.message}</p>}
                             </div>
@@ -445,7 +466,7 @@ const ProductsPage = () => {
                                         required: 'Regular price is required',
                                         min: { value: 0, message: 'Price must be positive' }
                                     })}
-                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
+                                    className="mt-1 block w-full h-12 px-4 rounded-md border-2 border-[#e55c00] shadow-sm focus:border-[#e55c00] focus:ring-[#e55c00] focus:ring-opacity-50 transition-colors"
                                 />
                                 {errors.RegularPrice && <p className="text-red-500 text-sm mt-1">{errors.RegularPrice.message}</p>}
                             </div>
@@ -460,7 +481,7 @@ const ProductsPage = () => {
                                         required: 'Offer price is required',
                                         min: { value: 0, message: 'Price must be positive' }
                                     })}
-                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
+                                    className="mt-1 block w-full h-12 px-4 rounded-md border-2 border-[#e55c00] shadow-sm focus:border-[#e55c00] focus:ring-[#e55c00] focus:ring-opacity-50 transition-colors"
                                 />
                                 {errors.OfferPrice && <p className="text-red-500 text-sm mt-1">{errors.OfferPrice.message}</p>}
                             </div>
@@ -470,7 +491,7 @@ const ProductsPage = () => {
                                 <select
                                     defaultValue={editingProduct.status}
                                     {...register('status', { required: 'Status is required' })}
-                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
+                                    className="mt-1 block w-full h-12 px-4 rounded-md border-2 border-[#e55c00] shadow-sm focus:border-[#e55c00] focus:ring-[#e55c00] focus:ring-opacity-50 transition-colors"
                                 >
                                     <option value="">Select Status</option>
                                     <option value="In Stock">In Stock</option>
@@ -485,7 +506,7 @@ const ProductsPage = () => {
                                     type="text"
                                     defaultValue={editingProduct.color}
                                     {...register('color', { required: 'Color is required' })}
-                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
+                                    className="mt-1 block w-full h-12 px-4 rounded-md border-2 border-[#e55c00] shadow-sm focus:border-[#e55c00] focus:ring-[#e55c00] focus:ring-opacity-50 transition-colors"
                                 />
                                 {errors.color && <p className="text-red-500 text-sm mt-1">{errors.color.message}</p>}
                             </div>
@@ -511,7 +532,7 @@ const ProductsPage = () => {
                                             >
                                                 <span>Upload a file</span>
                                                 <input
-                                                    id="mobileImg"
+                                                    id="editMobileImg"
                                                     type="file"
                                                     accept="image/*"
                                                     className="sr-only"
@@ -531,29 +552,16 @@ const ProductsPage = () => {
 
                             <div className="flex justify-end space-x-2">
                                 <button
-                                    type="button"
-                                    onClick={() => {
-                                        setIsAddModalOpen(false);
-                                        reset();
-                                        const preview = document.getElementById('imagePreview');
-                                        if (preview) preview.innerHTML = '';
-                                    }}
-                                    className="px-4 py-2 border rounded hover:bg-gray-100"
-                                >
-                                    Cancel
-                                </button>
-                                <button
                                     type="submit"
                                     className="px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600"
                                 >
-                                    Add Product
+                                    Update Product
                                 </button>
                             </div>
                         </form>
                     </div>
                 </div>
             )}
-     
         </div>
     );
 };
