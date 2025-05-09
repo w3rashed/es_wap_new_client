@@ -30,10 +30,14 @@
     "postcss": "^8.4.35",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
+<<<<<<< HEAD
   },
   "description": "This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).",
   "main": "next.config.js",
   "keywords": [],
   "author": "",
   "license": "ISC"
+=======
+  }
+>>>>>>> 5c644dd81a4a76a30ee7185f16321fb3932e5407
 }

@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Enable proper dynamic routing support
+  
   // output: 'standalone',
   
   // Optimize image domains if you're using next/image
