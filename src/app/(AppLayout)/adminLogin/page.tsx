@@ -34,7 +34,7 @@ const AdminLoginPage = () => {
             if (response.data.success) {
                 login(response.data.user);
                 toast.success('Login successful!');
-                router.push('/dashboard');
+                router.push('/dashboard/orders');
             } else {
                 toast.error(response.data.message || 'Invalid credentials');
             }
@@ -55,7 +55,7 @@ const AdminLoginPage = () => {
                         Please sign in to access the admin dashboard
                     </p>
                 </div>
-                <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
+                <form className="mt-8 " onSubmit={handleSubmit(onSubmit)}>
                     <div className="rounded-md shadow-sm -space-y-px">
                         <div className="relative">
                             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -118,6 +118,20 @@ const AdminLoginPage = () => {
                     {errors.password && (
                         <p className="text-red-500 text-sm">{errors.password.message}</p>
                     )}
+                    {errors.password && (
+                    <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
+                    )}
+
+                    <div className="flex justify-end my-1">
+                        <button
+                            type="button"
+                            onClick={() => router.push('/forgot-password')}
+                            className="text-sm text-orange-500 hover:text-orange-600 font-medium transition-colors"
+                        >
+                            Forgot your password?
+                        </button>
+                    </div>
+
 
                     <div>
                         <button
@@ -127,6 +141,7 @@ const AdminLoginPage = () => {
                             Sign in
                         </button>
                     </div>
+                    
                 </form>
             </div>
         </div>

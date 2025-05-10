@@ -9,10 +9,9 @@ import { useAuth } from '@/Providers/auth/AuthContext';
 import UseAxiosPrivet from '@/hooks/UseAxiosPrivet';
 
 const menuItems = [
-    { name: 'Users', path: '/dashboard/users', icon: FaUsers },
+    { name: 'Orders', path: '/dashboard/orders', icon: FaShoppingCart },
     { name: 'Bannder Image', path: '/dashboard/bannerImage', icon: FaImage },
     { name: 'Products', path: '/dashboard/products', icon: FaBox },
-    { name: 'Orders', path: '/dashboard/orders', icon: FaShoppingCart },
     { name: 'Analytics', path: '/dashboard/analytics', icon: FaChartBar },
     { name: 'Settings', path: '/dashboard/settings', icon: FaCog },
 ];

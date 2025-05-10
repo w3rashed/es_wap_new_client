@@ -12,6 +12,7 @@ const HomePage = () => {
     return (
         <div className='px-2'>
             <div className='container mx-auto'>
+               
                 <BannerSlider />
             </div>
             <div className='container mx-auto my-10'>

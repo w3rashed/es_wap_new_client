@@ -6,6 +6,7 @@ import useAxiosPublic from '@/hooks/UseAxiosPublic';
 import toast from 'react-hot-toast';
 import UseGetProducts from '@/hooks/UseGetProducts';
 import { FaCloudUploadAlt } from 'react-icons/fa';
+import UseGetConsumerProducts from '@/hooks/UseGetConsumerProducts';
 
 interface Product {
     _id?: string;
@@ -24,7 +25,7 @@ const brands = [
 ];
 
 const ProductsPage = () => {
-    const { products, isLoading, error, refetch } = UseGetProducts();
+    const { ConsumerProducts, isLoading, error, refetch } = UseGetConsumerProducts();
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [editingProduct, setEditingProduct] = useState<Product | null>(null);
@@ -339,7 +340,7 @@ const ProductsPage = () => {
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200">
-                        {products?.map((product: Product) => (
+                        {ConsumerProducts?.map((product: Product) => (
                             <tr key={product._id}>
                                 <td className="px-6 py-4 whitespace-nowrap">
                                     {product.mobileImg && (
