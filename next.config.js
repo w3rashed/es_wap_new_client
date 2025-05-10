@@ -1,11 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  
 
   // Optimize image domains if you're using next/image
   images: {
     domains: ["localhost", "homemobilestore.com"],
     unoptimized: true,
+
   },
 
   // Enable strict mode for better development experience
@@ -18,6 +18,7 @@ const nextConfig = {
   async rewrites() {
     return [
       {
+
         source: "/adminLogin",
         destination: "/adminLogin/",
       },
@@ -35,6 +36,7 @@ const nextConfig = {
         destination: "/verification/:iquamaNumber/",
       },
     ];
+
   },
 };
 
